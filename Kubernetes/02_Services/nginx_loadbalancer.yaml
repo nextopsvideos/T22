@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment # Controller
+metadata: 
+  name: nginx-lb-deploy
+  labels:
+    app: nginxlb
+spec:
+  replicas: 5   # ReplicaSet
+  selector:
+    matchLabels:
+      app: nginxlb
+  template:
+    metadata: 
+      name: nginx-pod
+      labels:
+        app: nginxlb
+    spec: 
+      containers:
+        - name: nginx
+          image: nginx 
+          ports:
+            - containerPort: 80
+      resources:
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: nginx-lb-service
+  labels:
+    app: nginxlb 
+spec:
+  selector:
+    app: nginxlb 
+  ports:
+  - port: 80
+    targetPort: 80
+  type: LoadBalancer
