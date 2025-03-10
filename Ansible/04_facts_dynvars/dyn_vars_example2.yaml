@@ -1,0 +1,12 @@
+- name: creating hostname var from facts
+  hosts: clients 
+  remote_user: root
+
+  tasks: 
+  - name: create a dyn var with remote hostname as value
+    command: hostname
+    register: hostname_var 
+  
+  - name: print the value from earlier variable
+    debug:
+      msg: "{{ hostname_var.stdout }}"

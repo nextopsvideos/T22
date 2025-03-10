@@ -1,0 +1,9 @@
+- name: Install nginx
+  hosts: clients
+  remote_user: root 
+
+  tasks:
+  - name: create files on remote macines
+    file:
+      path: /home/charan/file.txt
+      state: touch

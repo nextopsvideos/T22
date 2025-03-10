@@ -1,0 +1,14 @@
+- name: Installing package based on hostname
+  hosts: clients
+  remote_user: root
+
+  tasks:
+  - name: create a dyn var with remote hostname as value
+    command: hostname
+    register: hostname_var 
+  
+  - name: uninstall nginx only from client01
+    apt:
+      name: nginx
+      state: absent
+    when: hostname_var.stdout == "client01"

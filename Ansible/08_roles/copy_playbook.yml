@@ -1,0 +1,7 @@
+---
+- name: Exectuing role copy_playbook
+  hosts: clients
+  remote_user: root
+
+  roles:  
+  - copy_files

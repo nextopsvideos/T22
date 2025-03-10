@@ -1,0 +1,24 @@
+- name: Installing webserver based on os family
+  hosts: clients
+  remote_user: root
+
+  tasks:
+  - name: install nginx if it is ubuntu
+    apt: 
+      name: nginx
+      state: present
+    when: ansible_os_family == "Debian"
+  
+  - name: install apache2 if it is Redhat
+    yum: 
+      name: apache2
+      state: present
+    when: ansible_os_family == "RedHar"
+
+  - name: install IIS if it is Windows
+    win_feature:
+      name: 
+      - Web-Server
+      - Web-Common-Http
+      state: present
+    when: ansible_os_family == "Windows"

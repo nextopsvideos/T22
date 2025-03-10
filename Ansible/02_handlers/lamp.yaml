@@ -1,0 +1,66 @@
+- name: Install LAMP Stack
+  hosts: clients
+  remote_user: root 
+
+  tasks:
+  - name: Running apt-update
+    apt:
+      update-cache: yes
+  
+  - name: Installing apache
+    apt: 
+      name: apache2
+      state: present
+  
+  - name: Start apache service
+    service:
+      name: apache2
+      state: started
+      enabled: yes
+  
+  - name: delete the default welcome page
+    file:
+      path: /var/www/html/index.html
+      state: absent
+    notify:
+      -  Restart apache service
+  
+  - name: Copy custom welcome page
+    copy: 
+      src: "index.html"
+      dest: "/var/www/html/index.html"
+    notify:
+      -  Restart apache service
+  
+  - name: Installing MYSQL Community Edition
+    apt:
+      name: mariadb-server
+      state: present
+
+  - name: start MySQL service
+    service:
+      name: mariadb
+      state: started
+      enabled: yes
+
+  - name: Install PHP
+    apt:
+      name: 
+      - php
+      - php-mysql
+      state: present
+    notify:
+      - restart MySQL service
+      - Restart apache service
+  
+  handlers:
+  - name: Restart apache service
+    service:
+      name: apache2
+      state: restarted
+
+  - name: restart MySQL service
+    service:
+      name: mariadb
+      state: restarted
+      enabled: yes

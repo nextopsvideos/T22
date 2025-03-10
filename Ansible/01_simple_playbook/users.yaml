@@ -1,0 +1,11 @@
+- name: Install nginx
+  hosts: clients
+  remote_user: root 
+
+  tasks:
+  - name: create user accounts on remote machines
+    user:
+      name: user1
+      shell: /bin/bash
+      password: "test123"
+      state: present

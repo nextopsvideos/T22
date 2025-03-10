@@ -1,0 +1,37 @@
+- name: Uninstall LAMP Stack
+  hosts: clients
+  remote_user: root
+  vars_files:
+  - lamp_vars.txt
+   
+  tasks:  
+  - name: Stop apache service
+    service:
+      name: "{{ apache_pkg }}"
+      state: stopped
+      enabled: no
+
+  - name: uninstalling apache
+    apt: 
+      name: "{{ apache_pkg }}"
+      state: absent
+    
+  - name: stop MySQL service
+    service:
+      name: "{{ mysql_service }}"
+      state: stopped
+      enabled: no
+  
+  - name: uninstalling MYSQL Community Edition
+    apt:
+      name: "{{ mysql_pkg }}"
+      state: absent
+
+  - name: uninstall PHP
+    apt:
+      name: "{{ php_pkgs }}"
+      state: absent
+    notify:
+      - restart MySQL service
+      - Restart apache service
+  

@@ -1,0 +1,12 @@
+- name: create a user with hashed pass and playbook encryption
+  hosts: clients
+  remote_user: root
+  vars:
+    secret: Secure*123
+  
+  tasks:
+  - name: create a new user account
+    user:
+      name: user12
+      password: "{{ secret | password_hash('sha512') }}"
+      state: present
