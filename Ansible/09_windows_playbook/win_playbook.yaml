@@ -1,0 +1,10 @@
+- name: Installing IIS on windows
+  hosts: win 
+
+  tasks:
+  - name: Install IIS
+    win_feature:
+      name:
+      - Web-Server
+      - Web-Common-Http
+      state: present
